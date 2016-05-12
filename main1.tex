@@ -15,6 +15,8 @@
 \usetikzlibrary{calc} % for tikz calculations
 \usetikzlibrary{arrows,decorations.markings} % make arrow head bigger
 \usepackage{color,soul} % for reviews
+
+\usepackage{comment}
 \begin{document}
 
 \title{Improving wave functions for non-adiabatic calculations with quantum Monte Carlo}
@@ -111,12 +113,69 @@ For systems that do not show strong non-adiabatic behavior, we expect this to be
 
 To understand how strong the non-adiabatic effects are in CH, we wanted to consider a wave function in which there were more variational degrees of freedom for the nodes.  As described previously, the wave function \eqref{eqn:wfs3} is much more general than what we included in our previous studies, but is harder to generate.  Specifically it is not feasible to do a full wave function evaluation for each new configuration of the ions.  However, since there are only two ions in this molecule, it is feasible to precompute and optimize wave functions at different distances before during a full FN-DMC calculatio, and use the precomputed calculations in order to interpolate the wave function for all the relevant ion distances.  There are several different ways this can be done.   The first wave function one might consider is to actually grid up the distance between the ions, and calculate a fully optimized electronic wave function at each grid point.  Then one can evaluate the electronic wave function at each grid point, and use a weighting scheme to determine the actual electronic wave function given a distance between the ions.  This would be multiplied by a purely ionic wave function, as shown in \eqref{eqn:wfs3}.  Due to issues of wave function smoothness, we found it easier to just consider a wave function with the electronic determinant coefficients interpolated instead.
 
-To be specific, we consider the following procedure.  At the equilibrium position, optimize an electronic wave function, which includes all determinant coefficients and a Jastrow.   As a large distance,  but still in the region in which the ions sample, we optimize an electronic wave function, but only the determinant coefficients.  We fix the Jastrow to be the same as the one we optimized at the equilibrium position.  We then take all the determinant coefficients for the two different wave functions, and fix a second order polynomial to them (there are general a few hundred of these), for which we then use to interpolate the multi-determinant wave function for all ion positions.  In this way we go beyond the dragged node approximation, as the coefficients of the determinants are allowed to change rapidly with ion distance, and can capture complicated dependences of the nodes.
+To be specific, we consider the following procedure. At the equilibrium C-H separation $R_e$, optimize the electronic wave function, which includes all determinant coefficients and a Jastrow. At two C-H separations near equilibrium $R_{\text{left}}$,$R_{\text{right}}$, reoptimize only the determinant coefficients of the electronic wave function. For each determinant coefficient, approximate its ion-dependence as a linear function through the re-optimized values
+\begin{align}
+c_i^*(R) = c_i(R_{\text{left}}) + 
+\dfrac{c_i(R_{\text{right}}) - c_i(R_{\text{left}})}{R_{\text{right}}-R_{\text{left}}}\cdot(R-R_{\text{left}}).
+\end{align}
+
+In this way we go beyond the dragged node approximation, as the coefficients of the determinants are allowed to change with ion distance, and can capture complicated dependences of the nodes. 
+
+% As a large distance,  but still in the region in which the ions sample, we optimize an electronic wave function, but only the determinant coefficients.  We fix the Jastrow to be the same as the one we optimized at the equilibrium position.  We then take all the determinant coefficients for the two different wave functions, and fix a second order polynomial to them (there are general a few hundred of these), for which we then use to interpolate the multi-determinant wave function for all ion positions.  
 
 \section{Results and Discussion}
 
-Our results are quite interesting, when we apply this wave functions to the CH molecule.  Our previous results showed a non-adiabatic energy of roughly 2mHa.   Our new results show a non-adiabatic energy of roughly 1mHa.  While this is still not a definitive result, this is what we would have expected for the case in which the non-adiabatic results are non-negligible for the system.  It is evident that when a system has somewhat sizeable non-adiabatic effects that more effort is going to be needed in generating accurate wave functions.  The improved wave functions will always lower the energy and likely reduce the non-adiabatic energy.  The non-adaibatic energy is still large however, which is consistent with the fact that we had to use a wave function of the type seen in equation \eqref{eqn:wfs3}.
+Our results are quite interesting, when we apply this wave functions to the CH molecule.  Our previous results showed a non-adiabatic energy of roughly 2mHa. Our new results show a non-adiabatic energy of roughly 1mHa as shown in Fig.\ref{fig:ch-interp}.  While this is still not a definitive result, this is what we would have expected for the case in which the non-adiabatic results are non-negligible for the system.  It is evident that when a system has somewhat sizeable non-adiabatic effects that more effort is going to be needed in generating accurate wave functions.  The improved wave functions will always lower the energy and likely reduce the non-adiabatic energy.  The non-adaibatic energy is still large however, which is consistent with the fact that we had to use a wave function of the type seen in equation \eqref{eqn:wfs3}.
 
+We performed clamped-ion (static) and fully nonadiabatic (dynamic) calculations using different truncations levels for the determinant expansion. DMC energy and variance for the various calculations are shown in Table~\ref{tab:energy}. As we include more determinants in our wave function, both energy and variance of the static calculation decrease. This confirms that we have better variational wave functions by including more determinants. The energy and variance of the dynamic run with determinant coefficient interpolation is never higher than the dynamic run without interpolation at a statistically significant level. This shows that our interpolation process never worsen the quality of our wave function. A comparison between the dynamic runs with and without interpolation also shows that coefficient interpolation becomes more important for larger determinant expansion.
+
+\begin{table}[h]
+\begin{tabular}{lrrrl}
+\hline\hline
+$N_{CSF}$ & Energy (Ha) & Variance (Ha$^2$) & method \\
+\hline
+17   & -38.4709(1) &  0.3130(5) &    static \\
+17   & -38.4622(2) &  0.3169(3) &   dynamic \\
+17   & -38.4621(2) &  0.3173(3) &  dynamic* \\
+251  & -38.47695(8)&  0.2489(3) &    static \\
+251  & -38.4667(1) &  0.334(2)  &   dynamic \\
+251  & -38.4679(1) &  0.2713(7) &  dynamic* \\
+1417 & -38.4781(1) &  0.2300(4) &    static \\
+1417 & -38.4676(1) &  0.334(5)  &   dynamic \\
+1417 & -38.4687(2) &  0.267(7)  &  dynamic* \\
+\hline\hline
+\end{tabular}
+\caption{DMC energy and variance with static ions, dynamic ions and dynamic ions with determinant coefficient interpolation (*).\label{tab:energy}}
+\end{table}
+
+In Fig.~\ref{fig:ch-interp} we show the various contributions to the difference between the static and dynamic ground-state energies as calculated from Table~\ref{tab:energy}. Only the CH data is new in this report. The rest of the data are taken from Ref.~\cite{Yang2015}. Our best result is the one marked with an * shown in the bottom plot of Fig.~\ref{fig:ch-interp}. This run includes the most number of determinants and takes advantage of coefficient interpolation. The result without * shown in the same plot is directly taken from Ref.~\cite{Yang2015}. It is clear that there was significant artificial contribution to the nonadiabatic energy of CH from the drag-node approximation. However, the fact that CH is the only molecule where drag-node approximation fails suggests the nodal structure of its wave function has more complex dependence on the ion configuration than the rest of the molecules under consideration.
+
+Comparing all three plots in Fig.~\ref{fig:ch-interp} reveals that the nonadiabatic energy is only captured with a large determinant expansion. In addition, the drag-node approximation does not fail for the smallest determinant expansion we tested. This means the intricacies of the ion-dependence of the nodal surface comes from the inclusion of highly excited determinants. While giving rise to a better wave function at any fixed ion position, these intricacies caused the drag-node approximation to fail and lead to an artificial contribution to the nonadaibatic energy in our original calculation.
+
+\begin{figure}[h]
+\includegraphics[scale=0.5]{35}
+\includegraphics[scale=0.5]{723}
+\includegraphics[scale=0.5]{4738}
+\caption{``nonadiabatic energy'' of CH with (*) and without determinant coefficient interpolation. The number of CSFs involved from top to bottom are 17, 251 and 1417, respectively. Data for the rest of the diatomics are taken from~\cite{Yang2015} for comparison.\label{fig:ch-interp} }
+\end{figure}
+
+\begin{comment}
+\begin{figure}[h]
+\includegraphics[scale=0.55]{two-point-fit}
+\caption{Two-point fit for the determinant coefficients.\label{fig:two-point-fit}}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[scale=0.55]{one-point-fit}
+\caption{One-point fit for the determinant coefficients.\label{fig:one-point-fit}}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[scale=0.5]{CH-fit-energy}
+\includegraphics[scale=0.5]{CH-fit-variance}
+\caption{Quality of the various forms wave function, quantified by energy and variance at the variational level. \label{fig:wf quality} }
+\end{figure}
+\end{comment}
 
 
 \section{Conclusion}

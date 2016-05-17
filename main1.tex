@@ -69,7 +69,7 @@ We considered three classes of wave functions that are progressively more accura
 \begin{align}
 \Psi(r,R) =& e^{J(r,R)}\phi(R)\sum_{i}\alpha^{*}_{i} D_{i}(r) \label{eqn:wfs1}\\
 \Psi(r,R) =&e^{J(r,R)}\phi(R)\sum_{i}\alpha^{*}_{i} D_{i}(r,R^{*}) \label{eqn:wfs2}\\
-\Psi(r,R) =& e^{J(r,R)}\phi(R)\sum_{i}\alpha^{}_{i} D_{i}(r,R), \label{eqn:wfs3}
+\Psi(r,R) =& e^{J(r,R)}\phi(R)\sum_{i}\alpha^{}_{i}(R) D_{i}(r,R), \label{eqn:wfs3}
 \end{align}
 where $r$ refers to the coordinates of all the electrons and $R$ to those of all the ions.  $J(r,R)$ is the Jastrow term which involves variational parameters that correlate the quantum particles and additionally  enforce cusp conditions in the wave function.  $\phi(R)$ is the nuclear part of the wave function. The final terms correspond to determinants $D$ and the corresponding coefficients $\alpha$.    The $*$ denotes how these terms are evaluated, as will be discussed. 
 
@@ -145,8 +145,15 @@ We optimize the CSF and Jastrow coefficients, $\vec{\alpha}$ and $\vec{\beta}$, 
 We consider a second type of wave function of form Eq (\ref{eqn:wfs3}) for the CH molecules.  This involves the following additional steps. At the equilibrium C-H separation $R_e$, optimize the electronic wave function, which includes all determinant coefficients and a Jastrow. At two C-H separations near equilibrium $R_{\text{left}}$,$R_{\text{right}}$, reoptimize only the determinant coefficients of the electronic wave function. For each determinant coefficient, approximate its ion-dependence as a linear function through the re-optimized values
 \begin{align}
 c_i^*(R) = c_i(R_{\text{left}}) + 
-\dfrac{c_i(R_{\text{right}}) - c_i(R_{\text{left}})}{R_{\text{right}}-R_{\text{left}}}\cdot(R-R_{\text{left}}).
+\dfrac{c_i(R_{\text{right}}) - c_i(R_{\text{left}})}{R_{\text{right}}-R_{\text{left}}}\cdot(R-R_{\text{left}}). \label{eq:interpolation}
 \end{align}
+
+The potential energy surface for the proton given by the dragged node and interpolated wave functions are compared to that given by the fully optimized wave function in Fig.~\ref{fig:ch-cold}. The red curve with circles is obtained with the dragged node wave function of type (\ref{eqn:wfs2}), where the nodal dependence on the ion positions is only captured by dragging the orbitals with the ions. The black curve with crosses is obtained by re-optimizing the Jastrow factor and the determinant coefficients are at every C-H separation. The blue curve with triangles is obtained with the interpolated wave function of type (\ref{eqn:wfs3}), where the determinant coefficients depend on ion separation as given by (\ref{eq:interpolation}). The interpolated potential energy surface is a dramatic improvement over the dragged node surface and is close to the re-optimized surface in quality. 
+
+\begin{figure}[h]
+\includegraphics[scale=0.5]{CH-cold}
+\caption{Clamped-ion VMC total energy as a function of C-H separation using a hierarchy of wave functions. The dotted lines mark the FWHM of the distribution of C-H separation. \label{fig:ch-cold}}
+\end{figure}
 
 \section{Results and Discussion}
 
@@ -157,7 +164,7 @@ Our results are quite interesting, when we apply this wave functions to the CH m
 We performed clamped-ion (static) and fully nonadiabatic (dynamic) calculations using different truncations levels for the determinant expansion. DMC energy and variance for the various calculations are shown in Table~\ref{tab:energy}. As we include more determinants in our wave function, both energy and variance of the static calculation decrease. This confirms that we have better variational wave functions by including more determinants. The energy and variance of the dynamic run with determinant coefficient interpolation is never higher than the dynamic run without interpolation at a statistically significant level. This shows that our interpolation process never worsen the quality of our wave function. A comparison between the dynamic runs with and without interpolation also shows that coefficient interpolation becomes more important for larger determinant expansion.
 
 \begin{table}[h]
-\begin{tabular}{lrrrr}
+\begin{tabular}{llll}
 \hline\hline
 $N_{CSF}$ & Energy (Ha) & Variance (Ha$^2$) & method \\
 \hline

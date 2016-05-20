@@ -1,0 +1,11 @@
+*eps-converted-to.pdf
+
+# LaTeX compile stuff
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+main1.pdf
+*.synctex.gz
+*Notes.bib

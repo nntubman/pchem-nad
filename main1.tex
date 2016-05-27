@@ -180,30 +180,30 @@ In our previous study, wave functions of the form in Eq.~\eqref{eqn:wfs2} were u
 Our new results for CH with the improved wave functions can be seen in Table~\ref{tab:energy}.  Due to the variational property of FN-DMC, it is evident that these results are improved energy over the previous best results for the CH molecule, which is not unexpected given the differences between the interpolated wave function and the dragged-node wave function as seen in Fig.~\ref{fig:ch-cold}. Our previous results showed a nonadiabatic energy of 1.9~mHa. Our new results show a nonadiabatic energy of 0.9~mHa, which can be seen for the largest determinant expansion in Table~\ref{tab:energy}.  This is consistent with our previous results, mainly that the CH molecule is somewhat nonadiabatic, even though our new estimate of the nonadiabatic energy is smaller.  For a system with a moderate amount of nonadiabatic energy, more effort is needed in generating accurate wave functions.  Improving the wave functions beyond the dragged-node approximation will lower the estimate of the nonadiabatic energy. This is what we see for CH, as the nonadiabatic energy is still  relatively large in comparison to other systems.  We note that this is still not a definitive estimate of the nonadiabatic energy, but it is likely the best estimate ever calculated for this system.
 
 We also noticed interesting behavior that results from improving the quality of the electron nodes.  We performed clamped-ion (static) and fully nonadiabatic (dynamic) calculations using different truncations levels for the determinant expansion. The FN-DMC energy and variance for the various calculations are shown in Table~\ref{tab:energy}. As we include more determinants in our wave function, both the energy and variance of the static calculation decrease. %This confirms that we have better variational wave functions by including more determinants.  
-However, the same does not happen for the variance of the dragged-node approximation, in which we see the surprising result that the variance increases.  This suggests that the clamped-ion wave functions are being improved to a larger extent than the dragged-node wave functions with increasing determinant number.  It is also interesting to note that for the wave functions with the smallest determinant expansion (N$_{det}$ = 17),  the variance is almost the same between the clamped-ion and dragged-node wave functions. 
+However, the same does not happen for the variance of the dragged-node approximation, in which we see the surprising result that the variance increases.  This suggests that the clamped-ion wave functions are being improved to a larger extent than the dragged-node wave functions with increasing determinant number.  It is also interesting to note that for the wave functions with the smallest determinant expansion (N$_{\text{det}}$ = 35),  the variance is almost the same between the clamped-ion and dragged-node wave functions. 
 
 The energy and variance with determinant coefficient interpolation is never worse than our previous wave function with the dragged-node approximation.  A comparison between the dynamic runs with and without interpolation also shows that coefficient interpolation becomes more important for larger determinant expansions.  In particular, the variance improves with increasing determinant number, showing similar behavior to that of the static wave function.   
 
 \begin{table}[h]
 \begin{tabular}{llll}
 \hline\hline
-$N_{CSF}$ & Energy (Ha) & Variance (Ha$^2$) & method \\
+$N_{\text{det}}$ & Energy (Ha) & Variance (Ha$^2$) & method \\
 \hline
-17   & -38.4709(1) &  0.3130(5) &    static \\
-17   & -38.4622(2) &  0.3169(3) &   drag \\
-17   & -38.4621(2) &  0.3173(3) &  interp. \\
-251  & -38.4770(1)&  0.2489(3) &    static \\
-251  & -38.4667(1) &  0.334(2)~  &   drag \\
-251  & -38.4679(1) &  0.2713(7) &  interp. \\
-1417 & -38.4781(1) &  0.2300(4) &    static \\
-1417 & -38.4676(1) &  0.334(5)~  &   drag \\
-1417 & -38.4687(2) &  0.267(7)~  &  interp. \\
+35   & -38.4709(1) &  0.3130(5) &    static \\
+35   & -38.4622(2) &  0.3169(3) &   drag \\
+35   & -38.4621(2) &  0.3173(3) &  interp. \\
+723  & -38.4770(1)&  0.2489(3) &    static \\
+723  & -38.4667(1) &  0.334(2)~  &   drag \\
+723  & -38.4679(1) &  0.2713(7) &  interp. \\
+4739 & -38.4781(1) &  0.2300(4) &    static \\
+4739 & -38.4676(1) &  0.334(5)~  &   drag \\
+4739 & -38.4687(2) &  0.267(7)~  &  interp. \\
 \hline\hline
 \end{tabular}
 \caption{DMC energy and variance with static ions, dynamic ions with dragged-node (``drag'') and dynamic ions with determinant coefficient interpolation (``interp.'').\label{tab:energy}}
 \end{table}
 
-In Fig.~\ref{fig:ch-interp} we show the various contributions to the difference between the static and dynamic ground-state energies. Due to the difference in energy scales for the quantities of interest, we only plot the diagonal Born-Oppenheimer energy and the nonadiabatic energy.   To calculate the nonadiabatic energy we take the estimated zero-point energy for CH to be  6.438 mHa~\cite{Feller_Corrections}. The diagonal Born-Oppenheimer correction is estimated to be 2.11 mHa~\cite{Yang2015}. Our best result is given by the 1417 csf interpolated wave function in Fig.~\ref{fig:ch-interp}.  It is clear, there is an increase in the nonadiabatic energy of the CH molecule that results from using the dragged-node approximation. %Further testing in the future is needed to see if any of the other molecules can be improved with an interpolated wave function. 
+In Fig.~\ref{fig:ch-interp} we show the various contributions to the difference between the static and dynamic ground-state energies. Due to the difference in energy scales for the quantities of interest, we only plot the diagonal Born-Oppenheimer energy and the nonadiabatic energy.   To calculate the nonadiabatic energy we take the estimated zero-point energy for CH to be  6.438 mHa~\cite{Feller_Corrections}. The diagonal Born-Oppenheimer correction is estimated to be 2.11 mHa~\cite{Yang2015}. Our best result is given by the 4739 determinant interpolated wave function in Fig.~\ref{fig:ch-interp}.  It is clear, there is an increase in the nonadiabatic energy of the CH molecule that results from using the dragged-node approximation. %Further testing in the future is needed to see if any of the other molecules can be improved with an interpolated wave function. 
  The improvement seen by using the interpolated wave function instead of the  dragged-node approximation is 1~mHa for the CH molecule; a relatively large change in the energy.  This improvement is unlikely for any of the other molecules under consideration based on our previous benchmarking.    That the dragged-node approximation produced such a large error for the CH molecule  suggests at the very least that the nodal structure of its wave function has more complex dependence on the ion configuration than the rest of the molecules under consideration.  
 
 Fig.~\ref{fig:ch-interp} also reveals that the nonadiabatic energy is only observed with the large determinant expansions.  There are several possible explanations for this.  It is possible we are optimzing the static wave function signficantly better than the electron-ion wave function.  There is some indication of this from the variance of the dragged-node approximation, but this is less evident for the interpolated wave function.  Another possible explanation is that only when the wave function is highly optimized do significant changes arise in the wave function amplitudes with regard to ion positions.  A related effect is that large fluctuations of the ion distance can be surpressed if the wave function at larger ion distances are poorly represented in the wave functions.  Such effects can be mitigated altogether with the interpolated wave function approach, and are likely to be surpressed with increasing the number of determinants for the electronic part of the wave function, even for the dragged-node wave function.  %Both the dragged-node approxmation and the interpolated wave function are significantly improved at larger distances when more determinants are included in the wave function.    
@@ -212,12 +212,12 @@ Fig.~\ref{fig:ch-interp} also reveals that the nonadiabatic energy is only obser
 %\includegraphics[scale=0.5]{35}
 %\includegraphics[scale=0.5]{723}
 \includegraphics[scale=0.5]{ch-only}
-\caption{Nonadiabatic energy of CH with and without determinant coefficient interpolation.  The wave function ``interp'' denotes that the determinant coefficients depend on C-H separation through linear interpolation. For the largest two csf expansions a more significant contribution from nonadiabatic effects is observed than the smallest csf expansion. \label{fig:ch-interp} }
+\caption{Nonadiabatic energy of CH with and without determinant coefficient interpolation.  The wave function ``interp'' denotes that the determinant coefficients depend on C-H separation through linear interpolation. For the largest two determinant expansions a more significant contribution from nonadiabatic effects is observed than the smallest determinant expansion. \label{fig:ch-interp} }
 \end{figure}
 
 \begin{figure}[h]
 \includegraphics[scale=0.5]{4738}
-\caption{Nonadiabatic energy of diatomic molecules.   Energies for the dragged-node calculations are taken from a previous study~\cite{Yang2015}. The best (1417 CSFs) result for CH with determinant coefficient interpolation is shown with *.  Note that for all the molcules except for BH and CH the nonadiabatic energies are roughly 0.1 mHa or smaller. }
+\caption{Nonadiabatic energy of diatomic molecules.   Energies for the dragged-node calculations are taken from a previous study~\cite{Yang2015}. The best (4739 determinant) result for CH with determinant coefficient interpolation is shown with *.  Note that for all the molcules except for BH and CH the nonadiabatic energies are roughly 0.1 mHa or smaller. }
 \end{figure}
 
 \begin{comment}
